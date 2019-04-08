@@ -25,7 +25,7 @@ if (window.MutationObserver) {
 }
 
 // Let's also track pageviews when the page is translated directly from translate.google.com or bing.com/translator
-// A function that can return individual query parameter
+// A function that can return individual query parameter (borrowed from https://davidwalsh.name/query-string-javascript)
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
