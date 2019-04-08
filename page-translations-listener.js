@@ -1,26 +1,28 @@
 (function() {
 // Observe DOM mutations whether the <html> node was changed by Google Translate
-var mutationObserver = new MutationObserver(function(mutations) {
-	mutations.forEach(function (mutation) {
-		var oldElementClass = mutation.oldValue;
-		var currentElementClass = mutation.target.className;
-		if (oldElementClass.indexOf('translated-') === -1 && currentElementClass.indexOf('translated-') > -1) {
-			window.dataLayer.push({
-				'event' : 'pageTranslated',
-				'translationLanguage' : mutation.target.lang,
-				'translationService' : 'google translate in chrome'
-			});
-		}
+if (window.MutationObserver) {
+	var mutationObserver = new MutationObserver(function(mutations) {
+		mutations.forEach(function (mutation) {
+			var oldElementClass = mutation.oldValue;
+			var currentElementClass = mutation.target.className;
+			if (oldElementClass.indexOf('translated-') === -1 && currentElementClass.indexOf('translated-') > -1) {
+				window.dataLayer.push({
+					'event' : 'pageTranslated',
+					'translationLanguage' : mutation.target.lang,
+					'translationService' : 'google translate in chrome'
+				});
+			}
+		})
+	}) 
+
+	var htmlNode = document.querySelector('html');
+	mutationObserver.observe(htmlNode, {
+		attributes: true,
+		attributeOldValue: true,
+		attributeFilter: ['class']
 	})
-}) 
-
-var htmlNode = document.querySelector('html');
-mutationObserver.observe(htmlNode, {
-	attributes: true,
-	attributeOldValue: true,
-	attributeFilter: ['class']
-})
-
+	
+}
 
 // Let's also track pageviews when the page is translated directly from translate.google.com or bing.com/translator
 // A function that can return individual query parameter
